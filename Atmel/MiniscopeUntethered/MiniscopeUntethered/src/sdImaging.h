@@ -215,6 +215,7 @@
 #define HEADER_GAIN_POS			4
 #define HEADER_LED_POS			5
 #define HEADER_NUM_FRAMES_POS	6
+#define HEADER_START_MEM_SECTOR 7
 
 /* ------------------------ DMA    ------------------------------------------*/
 #define IMAGING_SENSOR_XDMAC_CH		1
@@ -260,6 +261,7 @@ volatile  uint8_t captureEnabled		= 0;
  volatile uint32_t gain					= 1;
  volatile uint32_t ledValue				= 0;
  volatile uint32_t numFramesToRecord	= 0;
+ volatile uint32_t startMemSector = 0;
 
  volatile uint32_t testPoint			= 0;
 
@@ -832,6 +834,7 @@ void imagingSensorLoadHeader(){
 	//ledValue			= ((100- header[HEADER_LED_POS])*0x0FFF)/100; //header should be between 0 and 100; Used for DAC
 	ledValue			= header[HEADER_LED_POS]; //header should be between 0 and 255;
 	numFramesToRecord	= header[HEADER_NUM_FRAMES_POS];
+  startMemSector = header[HEADER_START_MEM_SECTOR];
 
 
 }

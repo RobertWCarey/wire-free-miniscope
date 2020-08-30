@@ -296,9 +296,12 @@ int main (void)
 	
 	//DACC_updateOutput(ledValue,1);
 //
-	
-	sd_mmc_init_write_blocks(SD_SLOT_NB,STARTING_BLOCK,50*NB_BLOCKS_PER_FRAME);	
-	uint32_t curBlock = STARTING_BLOCK;
+  uint32_t startingBlock = STARTING_BLOCK;
+	if (startMemSector) {
+    startingBlock = startMemSector;
+  }
+	sd_mmc_init_write_blocks(SD_SLOT_NB,startingBlock,50*NB_BLOCKS_PER_FRAME);	
+	uint32_t curBlock = startingBlock;
 	uint32_t writeLineCount = 0;
 	uint32_t writeCount = 0;
 	tick_start = time_tick_get();

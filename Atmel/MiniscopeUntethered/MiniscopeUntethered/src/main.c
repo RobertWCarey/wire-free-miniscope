@@ -423,6 +423,23 @@ int main (void)
 			//sd_mmc_init_write_blocks(SD_SLOT_NB,STARTING_BLOCK-1,1);
 			//sd_mmc_start_write_blocks(&test[0],1);//NB_BLOCKS_PER_WRITE
 			//sd_mmc_wait_end_of_write_blocks(false);
+      
+      
+      // read current header
+      uint8_t headerTemp[SDMMC_BLOCK_SIZE] = {0};
+      uint32_t *header = (uint32_t *)headerTemp;
+      sd_mmc_init_read_blocks(SD_SLOT_NB,HEADER_SECTOR,1);
+      sd_mmc_start_read_blocks(headerTemp,1);
+      sd_mmc_wait_end_of_read_blocks(false); 
+      
+      //modify header
+      header[HEADER_START_MEM_SECTOR] = curBlock+50*NB_BLOCKS_PER_FRAME;
+
+      // write header to sdcard
+      sd_mmc_init_write_blocks(SD_SLOT_NB,HEADER_SECTOR,1);
+      sd_mmc_start_write_blocks(headerTemp,1);
+      sd_mmc_wait_end_of_write_blocks(false); //this does return an error code that we can check
+
 			ioport_set_pin_level(LED_PIN, 0);
 			ioport_set_pin_level(ENT_PIN, 0);
 			while(1){}
